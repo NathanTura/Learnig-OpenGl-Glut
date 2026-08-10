@@ -3,10 +3,13 @@
 
 #include <GL/freeglut.h>
 
-const int GRID_SIZE = 40;
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
+const float GRID_SIZE = 40.0f;
 
-void drawMap();
+void drawMap(
+    float left,
+    float right,
+    float bottom,
+    float top
+);
 
 #endif

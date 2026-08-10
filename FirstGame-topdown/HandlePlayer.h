@@ -8,18 +8,36 @@ class Player
 private:
     float x;
     float y;
+
     float size;
     float speed;
+
+    bool up;
+    bool down;
+    bool left;
+    bool right;
 
 public:
     Player();
 
     void draw();
-    void move(int key);
+
+    void KeyPressed(int key);
+    void KeyReleased(int key);
+
+    void update();
+
+    float getX();
+    float getY();
 };
 
+
+// The actual player object
 extern Player player;
 
+
+// GLUT callback functions
 void handleMovement(int key, int x, int y);
+void handleMovementRelease(int key, int x, int y);
 
 #endif
