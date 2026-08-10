@@ -13,8 +13,10 @@ Player::Player()
     down = false;
     left = false;
     right = false;
-}
 
+    // Start at normal zoom
+    zoom = 1.0f;
+}
 
 void Player::draw()
 {
@@ -50,19 +52,23 @@ void Player::KeyPressed(int key)
 {
     switch (key)
     {
-        case GLUT_KEY_UP:
+        case 'w':
+        case 'W':
             up = true;
             break;
 
-        case GLUT_KEY_DOWN:
+        case 's':
+        case 'S':
             down = true;
             break;
 
-        case GLUT_KEY_LEFT:
+        case 'a':
+        case 'A':
             left = true;
             break;
 
-        case GLUT_KEY_RIGHT:
+        case 'd':
+        case 'D':
             right = true;
             break;
     }
@@ -73,19 +79,23 @@ void Player::KeyReleased(int key)
 {
     switch (key)
     {
-        case GLUT_KEY_UP:
+        case 'w':
+        case 'W':
             up = false;
             break;
 
-        case GLUT_KEY_DOWN:
+        case 's':
+        case 'S':
             down = false;
             break;
 
-        case GLUT_KEY_LEFT:
+        case 'a':
+        case 'A':
             left = false;
             break;
 
-        case GLUT_KEY_RIGHT:
+        case 'd':
+        case 'D':
             right = false;
             break;
     }
@@ -96,9 +106,6 @@ void Player::update()
 {
     float dx = 0.0f;
     float dy = 0.0f;
-
-
-    // Calculate direction
 
     if (up)
         dy += 1.0f;
@@ -112,26 +119,15 @@ void Player::update()
     if (right)
         dx += 1.0f;
 
-
-    // Normalize diagonal movement
-
     if (dx != 0.0f && dy != 0.0f)
     {
         dx *= 0.7071f;
         dy *= 0.7071f;
     }
 
-
-    // Move player
-
     x += dx * speed;
     y += dy * speed;
 }
-
-
-// --------------------------------------------------
-// Getters
-// --------------------------------------------------
 
 float Player::getX()
 {
@@ -144,25 +140,53 @@ float Player::getY()
     return y;
 }
 
+void Player::zoomIn()
+{
+    zoom -= ZOOM_SPEED;
 
-// --------------------------------------------------
-// Create player
-// --------------------------------------------------
+    if (zoom < MIN_ZOOM)
+        zoom = MIN_ZOOM;
+}
+
+void Player::zoomOut()
+{
+    zoom += ZOOM_SPEED;
+
+    if (zoom > MAX_ZOOM)
+        zoom = MAX_ZOOM;
+}
+
+float Player::getZoom()
+{
+    return zoom;
+}
 
 Player player;
 
-
-// --------------------------------------------------
-// GLUT callbacks
-// --------------------------------------------------
-
-void handleMovement(int key, int x, int y)
+void handleMovement(unsigned char key, int x, int y)
 {
     player.KeyPressed(key);
+
+    glutPostRedisplay();
 }
 
 
-void handleMovementRelease(int key, int x, int y)
+void handleMovementRelease(unsigned char key, int x, int y)
 {
     player.KeyReleased(key);
+}
+
+
+void mouseWheel(int wheel, int direction, int x, int y)
+{
+    if (direction > 0)
+    {
+        player.zoomIn();
+    }
+    else
+    {
+        player.zoomOut();
+    }
+
+    glutPostRedisplay();
 }

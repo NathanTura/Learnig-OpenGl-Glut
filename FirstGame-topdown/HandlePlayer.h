@@ -17,6 +17,13 @@ private:
     bool left;
     bool right;
 
+    // Zoom
+    float zoom;
+
+    const float MIN_ZOOM = 0.35f;
+    const float MAX_ZOOM = 2.2f;
+    const float ZOOM_SPEED = 0.1f;
+
 public:
     Player();
 
@@ -29,15 +36,17 @@ public:
 
     float getX();
     float getY();
+
+    // Zoom
+    void zoomIn();
+    void zoomOut();
+    float getZoom();
 };
 
-
-// The actual player object
 extern Player player;
 
-
-// GLUT callback functions
-void handleMovement(int key, int x, int y);
-void handleMovementRelease(int key, int x, int y);
+void handleMovement(unsigned char key, int x, int y);
+void handleMovementRelease(unsigned char key, int x, int y);
+void mouseWheel(int wheel, int direction, int x, int y);
 
 #endif

@@ -2,7 +2,11 @@
 
 echo Compiling...
 
-g++ Main.cpp drawmap.cpp HandlePlayer.cpp -IC:\freeglut\include -LC:\freeglut\lib -lfreeglut -lopengl32 -lglu32 -lgdi32 -lwinmm -o Main.exe
+g++ Main.cpp HandlePlayer.cpp World.cpp Chunk.cpp drawmap.cpp ^
+-I"C:\freeglut\include" ^
+-L"C:\freeglut\lib" ^
+-lfreeglut -lopengl32 -lglu32 -lgdi32 -lwinmm ^
+-o Main.exe
 
 if %errorlevel% neq 0 (
     echo.

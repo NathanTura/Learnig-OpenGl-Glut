@@ -2,41 +2,30 @@
 
 #include "drawmap.h"
 #include "HandlePlayer.h"
-
-
-// --------------------------------------------------
-// Camera
-// --------------------------------------------------
+#include "World.h"
 
 float viewWidth;
 float viewHeight;
 
+float baseViewHeight = 600.0f;
 
-// --------------------------------------------------
-// Reshape
-// --------------------------------------------------
+World world;
 
 void reshape(int w, int h)
 {
     if (h == 0)
         h = 1;
 
-
     glViewport(0, 0, w, h);
-
 
     float aspect = (float)w / (float)h;
 
+    // Get zoom from player
+    float zoom = player.getZoom();
 
-    // Vertical world size
-    viewHeight = 600.0f;
-
-
-    // Horizontal world size
+    viewHeight = baseViewHeight * zoom;
     viewWidth = viewHeight * aspect;
 
-
-    // Camera follows player
 
     float cameraX = player.getX();
     float cameraY = player.getY();
@@ -45,7 +34,6 @@ void reshape(int w, int h)
     glMatrixMode(GL_PROJECTION);
 
     glLoadIdentity();
-
 
     gluOrtho2D(
         cameraX - viewWidth / 2.0f,
@@ -60,22 +48,30 @@ void reshape(int w, int h)
 
     glLoadIdentity();
 }
-
-
-// --------------------------------------------------
-// Camera update
-// --------------------------------------------------
 
 void updateCamera()
 {
     float cameraX = player.getX();
     float cameraY = player.getY();
 
+    float zoom = player.getZoom();
+
+    viewHeight = baseViewHeight * zoom;
+
+    int w = glutGet(GLUT_WINDOW_WIDTH);
+    int h = glutGet(GLUT_WINDOW_HEIGHT);
+
+    if (h == 0)
+        h = 1;
+
+    float aspect = (float)w / (float)h;
+
+    viewWidth = viewHeight * aspect;
+
 
     glMatrixMode(GL_PROJECTION);
 
     glLoadIdentity();
-
 
     gluOrtho2D(
         cameraX - viewWidth / 2.0f,
@@ -91,10 +87,6 @@ void updateCamera()
     glLoadIdentity();
 }
 
-
-// --------------------------------------------------
-// Display
-// --------------------------------------------------
 
 void display()
 {
@@ -108,12 +100,8 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT);
 
 
-    // Camera follows player
-
     updateCamera();
 
-
-    // Get visible area
 
     float cameraX = player.getX();
     float cameraY = player.getY();
@@ -132,8 +120,6 @@ void display()
         cameraY + viewHeight / 2.0f;
 
 
-    // Draw grid
-
     drawMap(
         left,
         right,
@@ -141,91 +127,50 @@ void display()
         top
     );
 
-
-    // Draw player
+    world.draw();
 
     player.draw();
-
-
     glutSwapBuffers();
 }
 
-
-// --------------------------------------------------
-// Update
-// --------------------------------------------------
 
 void update()
 {
     player.update();
 
+        world.update(
+        player.getX(),
+        player.getY()
+    );
+
+
     glutPostRedisplay();
 }
 
 
-// --------------------------------------------------
-// Main
-// --------------------------------------------------
-
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-
 
     glutInitDisplayMode(
         GLUT_DOUBLE |
         GLUT_RGB
     );
 
-
-    glutInitWindowSize(
-        800,
-        600
-    );
-
+    glutInitWindowSize(800,600);
 
     glutCreateWindow(
         "Top Down Test"
     );
 
-
-    // Window resize
-
-    glutReshapeFunc(
-        reshape
-    );
-
-
-    // Drawing
-
-    glutDisplayFunc(
-        display
-    );
-
-
-    // Keyboard
-
-    glutSpecialFunc(
-        handleMovement
-    );
-
-
-    // Keyboard release
-
-    glutSpecialUpFunc(
-        handleMovementRelease
-    );
-
-
-    // Game update
-
-    glutIdleFunc(
-        update
-    );
-
+    glutReshapeFunc(reshape);
+    glutDisplayFunc(display);
+    glutKeyboardFunc(handleMovement);
+    glutKeyboardUpFunc(handleMovementRelease);
+    glutMouseWheelFunc(mouseWheel);
+    glutIdleFunc(update);
 
     glutMainLoop();
-
 
     return 0;
 }
