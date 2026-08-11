@@ -1,15 +1,12 @@
 #include <GL/freeglut.h>
-
 #include "drawmap.h"
 #include "HandlePlayer.h"
-#include "World.h"
 
 float viewWidth;
 float viewHeight;
 
 float baseViewHeight = 600.0f;
 
-World world;
 
 void reshape(int w, int h)
 {
@@ -127,8 +124,6 @@ void display()
         top
     );
 
-    world.draw();
-
     player.draw();
     glutSwapBuffers();
 }
@@ -138,15 +133,13 @@ void update()
 {
     player.update();
 
-        world.update(
-        player.getX(),
-        player.getY()
-    );
+    static float debugTimer = 0.0f;
+
+    debugTimer += 0.016f;
 
 
     glutPostRedisplay();
 }
-
 
 int main(int argc, char** argv)
 {
