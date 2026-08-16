@@ -19,6 +19,7 @@ Camera* mainCamera = nullptr;
 int lastTime = 0;
 bool isDragging = false;
 bool keys[256] = {false};
+int visualizationMode = 3; // 1 = Particles, 2 = Streamlines, 3 = Both
 
 
 int windowWidth = 800;
@@ -73,16 +74,20 @@ void display() {
     }
 
     // Draw the particles
-    if (particleSystem) {
-        particleSystem->drawParticles();
+    if (visualizationMode == 1 || visualizationMode == 3) {
+        if (particleSystem) {
+            particleSystem->drawParticles();
+        }
     }
 
     // Draw the streamlines
-    glLineWidth(2.0f); // Make them slightly thicker
-    for (size_t i = 0; i < streamlines.size(); i++) {
-        streamlines[i].draw();
+    if (visualizationMode == 2 || visualizationMode == 3) {
+        glLineWidth(2.0f); // Make them slightly thicker
+        for (size_t i = 0; i < streamlines.size(); i++) {
+            streamlines[i].draw();
+        }
+        glLineWidth(1.0f); // Reset line width
     }
-    glLineWidth(1.0f); // Reset line width
 
     glutSwapBuffers();
 }
@@ -107,6 +112,12 @@ void keyboardDown(unsigned char key, int x, int y) {
     if (key == 27) { // ESC key
         exit(0);
     }
+    
+    // Visualization modes
+    if (key == '1') visualizationMode = 1;
+    if (key == '2') visualizationMode = 2;
+    if (key == '3') visualizationMode = 3;
+    
     // Record that this key is currently being held down
     keys[key] = true;
 }
@@ -186,6 +197,9 @@ int main(int argc, char** argv) {
     std::cout << "Q/E: Move Down/Up" << std::endl;
     std::cout << "Left Click + Drag: Look around" << std::endl;
     std::cout << "R: Reset Camera" << std::endl;
+    std::cout << "1: Particles Only" << std::endl;
+    std::cout << "2: Streamlines Only" << std::endl;
+    std::cout << "3: Both Modes" << std::endl;
     std::cout << "ESC: Exit" << std::endl;
 
     glutMainLoop();
