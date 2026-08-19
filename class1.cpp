@@ -25,8 +25,6 @@ void reshape(int width, int height)
 
 
 float angle = 0.0f;
-
-
 void rendertriangle()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -34,56 +32,107 @@ void rendertriangle()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-
     gluLookAt(
-        0.0f, 5.0f, 10.0f,   // Camera position: X, Y, Z
-        0.0f, 0.0f, 0.0f,    // Point the camera is looking at
-        0.0f, 1.0f, 0.0f     // Up direction
+        10.0f, 8.0f, 15.0f,   // Camera
+        0.0f, 2.0f, 0.0f,     // Look at
+        0.0f, 1.0f, 0.0f      // Up
     );
 
 
-    // Rotate the object around the Y axis
-    glRotatef(angle, 0.0f, 1.0f, 0.0f);
-    // glRotatef(angle, 1.0f, 0.0f, 0.0f);
-    // glRotatef(angle, 0.0f, 1.0f, 1.0f);
+    glPushMatrix();
 
-     
-
+    glColor3f(0.3f, 0.3f, 0.3f);
 
     glBegin(GL_QUADS);
 
-        glVertex3f(0.0f , 0.0f , 0.0f);
-        glVertex3f(5.0f , 0.0f , 0.0f);
-        glVertex3f(5.0f , 5.0f , 0.0f);
-        glVertex3f(0.0f , 5.0f , 0.0f);
-
-        glVertex3f(5.0f , 5.0f , 0.0f);
-        glVertex3f(5.0f , 5.0f , 5.0f);
-        glVertex3f(5.0f , 0.0f , 5.0f);
-        glVertex3f(5.0f , 0.0f , 0.0f);
-
-        glVertex3f(0.0f , 5.0f , 0.0f);
-        glVertex3f(0.0f , 5.0f , 5.0f);
-        glVertex3f(0.0f , 0.0f , 5.0f);
-        glVertex3f(0.0f , 0.0f , 0.0f);
-
-        glVertex3f(5.0f , 0.0f , 0.0f);
-        glVertex3f(5.0f , 5.0f , 0.0f);
-        glVertex3f(0.0f , 5.0f , 0.0f);
-        glVertex3f(0.0f , 0.0f , 0.0f);
-
-        glVertex3f(5.0f , 5.0f , 0.0f);
-        glVertex3f(5.0f , 5.0f , 5.0f);
-        glVertex3f(0.0f , 5.0f , 5.0f);
-        glVertex3f(0.0f , 5.0f , 0.0f);
-
-        glVertex3f(5.0f , 0.0f , 0.0f);
-        glVertex3f(5.0f , 0.0f , 5.0f);
-        glVertex3f(0.0f , 0.0f , 5.0f);
-        glVertex3f(0.0f , 0.0f , 0.0f);
-
+        glVertex3f(-8.0f, 0.0f, -4.0f);
+        glVertex3f( 8.0f, 0.0f, -4.0f);
+        glVertex3f( 8.0f, 0.0f,  4.0f);
+        glVertex3f(-8.0f, 0.0f,  4.0f);
 
     glEnd();
+
+    glPopMatrix();
+
+    glPushMatrix();
+
+    glTranslatef(-4.0f, 0.0f, 0.0f);
+
+    glColor3f(1.0f, 0.0f, 0.0f);
+
+    glBegin(GL_TRIANGLES);
+
+        // Front
+        glVertex3f(0.0f, 2.0f, 0.0f);
+        glVertex3f(-2.0f, 0.0f, 2.0f);
+        glVertex3f(2.0f, 0.0f, 2.0f);
+
+        // Right
+        glVertex3f(0.0f, 2.0f, 0.0f);
+        glVertex3f(2.0f, 0.0f, 2.0f);
+        glVertex3f(2.0f, 0.0f, -2.0f);
+
+        // Back
+        glVertex3f(0.0f, 2.0f, 0.0f);
+        glVertex3f(2.0f, 0.0f, -2.0f);
+        glVertex3f(-2.0f, 0.0f, -2.0f);
+
+        // Left
+        glVertex3f(0.0f, 2.0f, 0.0f);
+        glVertex3f(-2.0f, 0.0f, -2.0f);
+        glVertex3f(-2.0f, 0.0f, 2.0f);
+
+    glEnd();
+
+    glPopMatrix();
+
+    glPushMatrix();
+
+    glTranslatef(4.0f, 2.5f, 0.0f);
+
+    glColor3f(0.0f, 0.0f, 1.0f);
+
+    glBegin(GL_QUADS);
+
+        // Front
+        glVertex3f(-2.5f, -2.5f,  2.5f);
+        glVertex3f( 2.5f, -2.5f,  2.5f);
+        glVertex3f( 2.5f,  2.5f,  2.5f);
+        glVertex3f(-2.5f,  2.5f,  2.5f);
+
+        // Back
+        glVertex3f( 2.5f, -2.5f, -2.5f);
+        glVertex3f(-2.5f, -2.5f, -2.5f);
+        glVertex3f(-2.5f,  2.5f, -2.5f);
+        glVertex3f( 2.5f,  2.5f, -2.5f);
+
+        // Right
+        glVertex3f(2.5f, -2.5f,  2.5f);
+        glVertex3f(2.5f, -2.5f, -2.5f);
+        glVertex3f(2.5f,  2.5f, -2.5f);
+        glVertex3f(2.5f,  2.5f,  2.5f);
+
+        // Left
+        glVertex3f(-2.5f, -2.5f, -2.5f);
+        glVertex3f(-2.5f, -2.5f,  2.5f);
+        glVertex3f(-2.5f,  2.5f,  2.5f);
+        glVertex3f(-2.5f,  2.5f, -2.5f);
+
+        // Top
+        glVertex3f(-2.5f, 2.5f,  2.5f);
+        glVertex3f( 2.5f, 2.5f,  2.5f);
+        glVertex3f( 2.5f, 2.5f, -2.5f);
+        glVertex3f(-2.5f, 2.5f, -2.5f);
+
+        // Bottom
+        glVertex3f(-2.5f, -2.5f, -2.5f);
+        glVertex3f( 2.5f, -2.5f, -2.5f);
+        glVertex3f( 2.5f, -2.5f,  2.5f);
+        glVertex3f(-2.5f, -2.5f,  2.5f);
+
+    glEnd();
+
+    glPopMatrix();
 
     glutSwapBuffers();
 }
@@ -114,7 +163,6 @@ int main(int argc, char **argv)
     glutDisplayFunc(rendertriangle);
     glutReshapeFunc(reshape);
 
-    // Continuously update the rotation
     glutIdleFunc(update);
 
     glEnable(GL_DEPTH_TEST);
