@@ -2,11 +2,11 @@
 
 echo Compiling...
 
-g++ light.cpp  ^
+g++ main.cpp  ^
 -I"C:\Users\yerni\Desktop\freeglut\include" ^
 -L"C:\Users\yerni\Desktop\freeglut\build\lib" ^
 -lfreeglut -lopengl32 -lglu32 -lgdi32 -lwinmm ^
--o light.exe
+-o main.exe
 
 if %errorlevel% neq 0 (
     echo.
@@ -19,7 +19,7 @@ echo.
 echo Compilation successful!
 echo Starting game...
 
-light.exe
+main.exe
 
 echo.
 echo Game closed.
